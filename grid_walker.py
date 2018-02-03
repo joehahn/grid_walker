@@ -9,10 +9,19 @@
 #this was adapted from http://outlace.com/rlpart3.html  
 #to execute:    ./gridwalker.py
 
+#game settings
+grid_size = 6
+init = 'random_agent'
+#init = 'fixed'
+rn_seed = 15
+
 #imports
 import numpy as np
-import random
 import copy
+
+#seed random number generator
+import random
+np.random.seed(rn_seed)
 
 #initialize the environment = dict containing all constants that describe the system
 def initialize_environment(grid_size, init):
@@ -77,6 +86,12 @@ def make_grid(state, environment):
         x = xy['x']
         y = xy['y']
         grid[y, x] = object[0].upper()
+        if (object == 'goal'):
+            if (state['agent'] == state['goal']):
+                grid[y, x] = '*'
+        if (object == 'pit'):
+            if (state['agent'] == state['pit']):
+                grid[y, x] = '@'
     return grid
 
 #get reward
@@ -115,15 +130,43 @@ def state2vector(state, environment):
     xy = np.array([x, y])
     return xy.reshape(1, len(xy))
 
-#initialize settings
-grid_size = 6
-#init = 'fixed'
-init = 'random_agent'
-experience_replay = True
-memories_size = 80
-batch_size = memories_size/10
-rn_seed = 15
-np.random.seed(rn_seed)
+#initialize the memories queue with a buncha random moves
+def initialize_memorie(memories_size):
+    from collections import deque
+    memories = deque(maxlen=memories_size)
+    state = initialize_state(environment)
+    N_moves = 0
+    while (len(memories) < memories_size):
+        state_vector = state2vector(state, environment)
+        action = np.random.choice(actions)
+        state_next = move_agent(state, action, environment)
+        reward = get_reward(state_next, state)
+        game_state = get_game_state(state_next, N_moves, environment)
+        memories.append((state, action, reward, state_next, game_state))
+        if (game_state == 'running'):
+            state = state_next
+            N_moves += 1
+        else:
+            state = initialize_state(environment)
+            N_moves = 0
+    return memories
+
+#build neural network
+def build_model(N_inputs, grid_size, N_outputs):
+    from keras.models import Sequential
+    from keras.layers.core import Dense, Activation
+    from keras.optimizers import RMSprop
+    model = Sequential()
+    layer_size = grid_size**2
+    model.add(Dense(layer_size, input_shape=(N_inputs,)))
+    model.add(Activation('relu'))
+    model.add(Dense(layer_size))
+    model.add(Activation('relu'))
+    model.add(Dense(N_outputs))
+    model.add(Activation('linear'))
+    rms = RMSprop()
+    model.compile(loss='mse', optimizer=rms)
+    return model
 
 #check initial conditions
 environment = initialize_environment(grid_size, init)
@@ -148,120 +191,87 @@ print 'N_inputs = ', N_inputs
 print 'N_outputs = ', N_outputs
 print 'grid_size = ', grid_size
 print 'max_moves = ', max_moves
-print 'experience_replay = ', experience_replay
-print 'memories_size = ', memories_size
-print 'batch_size = ', batch_size
 print 'rn_seed = ', rn_seed
 
-#build neural network
-from keras.models import Sequential
-from keras.layers.core import Dense, Activation
-from keras.optimizers import RMSprop
-model = Sequential()
-layer_size = grid_size**2
-model.add(Dense(layer_size, input_shape=(N_inputs,)))
-model.add(Activation('relu'))
-model.add(Dense(layer_size))
-model.add(Activation('relu'))
-model.add(Dense(N_outputs))
-model.add(Activation('linear'))
-rms = RMSprop()
-model.compile(loss='mse', optimizer=rms)
-print model.summary()
-
-#initialize queue with memories of some random moves
-from collections import deque
-memories = deque(maxlen=memories_size)
-state = initialize_state(environment)
-N_moves = 0
-while (len(memories) < memories_size):
-    state_vector = state2vector(state, environment)
-    action = np.random.choice(actions)
-    state_next = move_agent(state, action, environment)
-    reward = get_reward(state_next, state)
-    game_state = get_game_state(state_next, N_moves, environment)
-    memories.append((state, action, reward, state_next, game_state))
-    if (game_state == 'running'):
-        state = state_next
-        N_moves += 1
-    else:
+#train model
+def train(model, N_training_games, gamma, memories_size, batch_size, debug=False):
+    epsilon = 1.0
+    for N_games in range(N_training_games):
         state = initialize_state(environment)
+        #initialize memory of random movements by agent
+        memories = initialize_memorie(memories_size)
+        experience_replay = True
         N_moves = 0
-
-#train
-N_training_games = 200
-gamma = 0.9
-epsilon = 1.0
-for N_games in range(N_training_games):
-    state = initialize_state(environment)
-    N_moves = 0
-    if (N_games > N_training_games/10):
-        #agent random walks for first 100 games, after which epsilon slowly down to 0.1
-        if (epsilon > 0.1):
-            epsilon -= 1.0/(N_training_games/2)
-    game_state = get_game_state(state, N_moves, environment)
-    while (game_state == 'running'):
-        state_vector = state2vector(state, environment)
-        #predict this turn's possible rewards Q
-        Q = model.predict(state_vector, batch_size=1)
-        #choose best action
-        if (np.random.random() < epsilon):
-            #choose random action
-            action = np.random.choice(environment['actions'])
-        else:
+        if (N_games > N_training_games/10):
+            #agent random walks for first 100 games, after which epsilon slowly down to 0.1
+            if (epsilon > 0.1):
+                epsilon -= 1.0/(N_training_games/2)
+        game_state = get_game_state(state, N_moves, environment)
+        while (game_state == 'running'):
+            state_vector = state2vector(state, environment)
+            #predict this turn's possible rewards Q
+            Q = model.predict(state_vector, batch_size=1)
             #choose best action
-            action = np.argmax(Q)
-        #get next state
-        state_next = move_agent(state, action, environment)
-        state_vector_next = state2vector(state_next, environment)
-        #predict next turn's possible rewards
-        Q_next = model.predict(state_vector_next, batch_size=1)
-        max_Q_next = np.max(Q_next)
-        reward = get_reward(state_next, state)
-        game_state = get_game_state(state_next, N_moves, environment)
-        #add next turn's discounted reward to this turn's predicted reward
-        Q[0, action] = reward
-        if (game_state == 'running'):
-            Q[0, action] += gamma*max_Q_next
-            grid = make_grid(state_next, environment)
-        else:
-            print("game number: %s" % N_games)
-            print("move number: %s" % N_moves)
-            print("action: %s" % environment['acts'][action])
-            grid = make_grid(state_next, environment)
-            print np.rot90(grid.T)
-            print("reward: %s" % reward)
-            print("epsilon: %s" % epsilon)
-            print("game_state: %s" % game_state)
-        if (experience_replay):
-            #train model on randomly selected past experiences
-            memories.append((state, action, reward, state_next, game_state))
-            memories_sub = random.sample(memories, batch_size)
-            statez = [m[0] for m in memories_sub]
-            actionz = [m[1] for m in memories_sub]
-            rewardz = [m[2] for m in memories_sub]
-            statez_next = [m[3] for m in memories_sub]
-            game_onz = [m[4] for m in memories_sub]
-            state_vectorz = np.array([state2vector(s, environment) for s in statez]).reshape(batch_size, N_inputs)
-            Qz = model.predict(state_vectorz, batch_size=batch_size)
-            state_vectorz_next = np.array([state2vector(s, environment) for s in statez_next]).reshape(batch_size, N_inputs)
-            Qz_next = model.predict(state_vectorz_next, batch_size=batch_size)
-            for idx in range(batch_size):
-                reward = rewardz[idx]
-                max_Q_next = np.max(Qz_next[idx])
-                action = actionz[idx]
-                Qz[idx, action] = reward
-                if (game_onz[idx] == 'running'):
-                    Qz[idx, action] += gamma*max_Q_next
-            model.fit(state_vectorz, Qz, batch_size=batch_size, epochs=1, verbose=0)
-        else:
-            #teach model about current action & reward
-            model.fit(state_vector, Q, batch_size=1, epochs=1, verbose=0)
-        state = state_next
-        N_moves += 1
+            if (np.random.random() < epsilon):
+                #choose random action
+                action = np.random.choice(environment['actions'])
+            else:
+                #choose best action
+                action = np.argmax(Q)
+            #get next state
+            state_next = move_agent(state, action, environment)
+            state_vector_next = state2vector(state_next, environment)
+            #predict next turn's possible rewards
+            Q_next = model.predict(state_vector_next, batch_size=1)
+            max_Q_next = np.max(Q_next)
+            reward = get_reward(state_next, state)
+            game_state = get_game_state(state_next, N_moves, environment)
+            #add next turn's discounted reward to this turn's predicted reward
+            Q[0, action] = reward
+            if (game_state == 'running'):
+                Q[0, action] += gamma*max_Q_next
+                grid = make_grid(state_next, environment)
+            else:
+                if (debug):
+                    print '======================='
+                    print 'game number = ', N_games
+                    print 'move number = ', N_moves
+                    print 'action = ', environment['acts'][action]
+                    grid = make_grid(state_next, environment)
+                    print np.rot90(grid.T)
+                    print 'reward = ', reward
+                    print 'epsilon = ', epsilon
+                    print 'game_state = ', game_state
+            if (experience_replay):
+                #train model on randomly selected past experiences
+                memories.append((state, action, reward, state_next, game_state))
+                memories_sub = random.sample(memories, batch_size)
+                statez = [m[0] for m in memories_sub]
+                actionz = [m[1] for m in memories_sub]
+                rewardz = [m[2] for m in memories_sub]
+                statez_next = [m[3] for m in memories_sub]
+                game_onz = [m[4] for m in memories_sub]
+                state_vectorz = np.array([state2vector(s, environment) for s in statez]).reshape(batch_size, N_inputs)
+                Qz = model.predict(state_vectorz, batch_size=batch_size)
+                state_vectorz_next = np.array([state2vector(s, environment) for s in statez_next]).reshape(batch_size, N_inputs)
+                Qz_next = model.predict(state_vectorz_next, batch_size=batch_size)
+                for idx in range(batch_size):
+                    reward = rewardz[idx]
+                    max_Q_next = np.max(Qz_next[idx])
+                    action = actionz[idx]
+                    Qz[idx, action] = reward
+                    if (game_onz[idx] == 'running'):
+                        Qz[idx, action] += gamma*max_Q_next
+                model.fit(state_vectorz, Qz, batch_size=batch_size, epochs=1, verbose=0)
+            else:
+                #teach model about current action & reward
+                model.fit(state_vector, Q, batch_size=1, epochs=1, verbose=0)
+            state = state_next
+            N_moves += 1
+    return model
 
-#test
-def test(environment):
+#test model
+def test_model(model, environment):
     acts = environment['acts']
     initial_state = initialize_state(environment)
     grid = make_grid(initial_state, environment)
@@ -285,6 +295,20 @@ def test(environment):
         if (game_state != 'running'):
             print("game_state: %s" %(game_state))
         state = state_next
-    return initial_state
+    final_state = state
+    return initial_state, final_state, N_moves
 
-initial_state = test(environment)
+#assemble the untrained neural network that will tell agent how to navigate the gird
+model = build_model(N_inputs, grid_size, N_outputs)
+print model.summary()
+
+#train neural network 
+N_training_games = 500                #number of games to play while training model
+gamma = 0.9                           #discount for future rewards
+memories_size = 100                    #size of memory queue size, for experience replay
+batch_size = memories_size/5         #number of memories to use when retraining the model
+debug = True
+trained_model = train(model, N_training_games, gamma, memories_size, batch_size, debug=debug)
+
+#test the trained neural network
+initial_state, final_state, N_moves = test_model(trained_model, environment)
