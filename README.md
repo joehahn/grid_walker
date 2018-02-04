@@ -39,5 +39,10 @@ Start Jupyter notebook via
 
 and load the grid_walker.ipynb notebook > Run.
 
-### 
+### Results:
+
+Grid_walker is a simple game that consistes of 4 objects, the agent A wall W pit P and goal G,
+that inhabit a 6x6 grid:
+![](figs/grid.png)
+
 
