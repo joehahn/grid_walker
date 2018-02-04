@@ -87,7 +87,7 @@ Success! Repeating this test will show that the model quite successful at
 guiding the randomly-positioned agent A around hazards W and P as it navigates towards goal G.
 
 However success is not 100%, and the following plays numerous grid_walker games
-in order to chart the initial agent positions ultimately result in a win
+in order to chart those initial agent positions that ultimately result in a win
 for the AI (which is signified in the chart below via a _g_ symbol since the AI delivered
 the agent into the Goal) and which
 agent starting positions result in a loss (ie the AI guided the agent into pit _p_ or else 
