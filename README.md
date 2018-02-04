@@ -42,9 +42,10 @@ and load the grid_walker.ipynb notebook > Run.
 ### Results:
 
 Grid_walker is a simple game that consistes of 4 objects: an agent A, wall W, pit P, and goal G,
-with these objects inhabiting a 6x6 grid:
+with these objects inhabiting a 6x6 grid. In the following, a 6x6 string array is used
+to track and display the locations of all 4 objects:
 ![](figs/grid.png)
-and only the agent is mobile while the other 3 objects P G and W remain at the same locations
+Only the agent is mobile while the other 3 objects P G and W remain at the same locations
 during the every game.
 
 Using the functionality provided in grid_walker.py, the agent can be instructed to move
