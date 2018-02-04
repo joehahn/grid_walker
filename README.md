@@ -48,8 +48,12 @@ and only the agent is mobile, the other 3 objects P G and W remain at fixed loca
 during the game.
 
 Using the functionality provided in grid_walker.py, the agent can be instructed to move
-one grid cell, and in the following the agent A was instructed to move one cell to the
-right:
+to an adjacent grid cell, and in the following the agent A was
+instructed to move one cell to the right, which also generated a small reward
+ie cost of -1
 ![](figs/move.png)
+while moving the agent up and onto the goal G instead generates a reward of 10
+![](figs/move.png)
+which also changes the game_state from 'running' to 'goal' and concludes the game.
 
-
+then...
