@@ -90,8 +90,8 @@ to chart which initial agent positions result in the AI winning the game
 (which is signified in the chart below via 'g' for Goal) and which
 initial positions lead to a loss (ie the AI guided the agent into pit 'p' or else 
 agent wandered the grid until the available moves 'm' where exhausted): 
-![](figs/test.png)
-
+![](figs/grid_test.png)
+Note that...
 
 
 
