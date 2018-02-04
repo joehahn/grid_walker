@@ -99,8 +99,8 @@ in the two _p_ cells seem to be in the shadow of pit P, and the AI drives
 these agents into the pit instead of the goal.
 However the fix is simple, just double the number of games played when training
 the model; set N_training_games=3000 and rerun to show that
-the retrained AI now wins 100% of the time when the agent is started at all possible
-grid_walker positions:
+the retrained AI now wins 100% of the time for all possible
+initial positions:
 ![](figs/retrain.png)
 :thumbsup:
 
