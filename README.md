@@ -69,7 +69,7 @@ For additional details see the build_model() function,
 https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L146#L161,
 which is where keras + tensorflow are used to assemble that neural net model.
 
-The model is then trained using epsilon-greedy Q-learning:  
+The model is then trained using epsilon-greedy Q-learning algorithm:
 ![](figs/train.png)
 initially the agent wanders the grid randomly while gathering (mostly negative) rewards.
 But in later training games the random moves are ramped down as the AI learns how to 
