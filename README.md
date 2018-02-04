@@ -71,9 +71,9 @@ which is where keras + tensorflow are used to assemble that neural net model.
 
 The model is then trained using an epsilon-greedy Q-learning algorithm:
 ![](figs/train.png)
-initially the agent wanders the grid randomly while gathering (mostly negative) rewards.
-But in later training games the random moves are ramped down as the AI learns how to 
-nudge the agent in the direction of maximum future rewards; see the source
+Initially the agent wanders the grid randomly while gathering mostly negative rewards.
+But in later training games the random movements are ramped down as the AI learns how to 
+nudge the agent towards the direction of maximum future rewards; see the source
 for more details on how Q-learning is used to train the AI,
 https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L164#L248
 
