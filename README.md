@@ -12,7 +12,7 @@ about a very simple 6x6 grid, guiding it towards a goal while avoiding obstacles
 
 This version of grid_walker was adapted from a blog post by Outlace,
 http://outlace.com/rlpart3.html. Outlace's original code is somewhat a mess,
-while I like to think the version provided here is significantly less a mess.
+while I like to think the version provided given is significantly less a mess.
 Nonetheless Outlace's description of the Q-learning algorithm is excellent and worth a read.
 
 ### Setup:
