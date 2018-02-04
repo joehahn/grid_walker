@@ -12,8 +12,8 @@ about a very simple 6x6 grid, guiding it towards a goal while avoiding obstacles
 
 This version of grid_walker was adapted from a blog post by Outlace,
 http://outlace.com/rlpart3.html. Outlace's original code was a sub-optimal mess,
-while I like to think this version is less so. Nonetheless his description of Q-learning
-is excellent and worth a read.
+while I like to think this version is less so. Nonetheless his description of the
+Q-learning algorithm is excellent and worth a read.
 
 ### Setup:
 
@@ -41,8 +41,8 @@ and load the grid_walker.ipynb notebook > Run.
 
 ### Results:
 
-Grid_walker is a simple game that consistes of 4 objects: an agent A, wall W, pit P, and goal G.
-These objects inhabit a 6x6 grid:
+Grid_walker is a simple game that consistes of 4 objects: an agent A, wall W, pit P, and goal G,
+with these objects inhabiting a 6x6 grid:
 ![](figs/grid.png)
 and only the agent is mobile while the other 3 objects P G and W remain at the same locations
 during the every game.
