@@ -53,8 +53,16 @@ to an adjacent grid cell, and in the following the agent A was
 instructed to move one cell to the right, which also generated a small reward
 ie cost of -1
 ![](figs/move.png)
-while moving the agent up and onto the goal G instead generates a reward of 10
+The agent is then moved up and onto the goal G which then generates a reward of 10
 ![](figs/move.png)
-which also changes the game_state from 'running' to 'goal' and concludes the game.
+and changes the game_state from 'running' to 'goal' to indicate the conclusion of
+this the game. The pit P is a hazard, and moving the agent there ends the game with
+a reward of -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
+and trying do so generates a reward of -3. 
 
-then...
+The purpose of this grid_walker demo is to build a neural-network based AI that will
+navigate the agent from any random starting cell over to goal G without bumping to
+the hazards W or P. This demo uses keras to build a two-hidden-layer net that are
+each composed of 36 neurons
+![](figs/net.png)
+
