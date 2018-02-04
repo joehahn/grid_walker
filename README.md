@@ -81,7 +81,7 @@ for more details on how Q-learning is used to train this AI.
 To test the abilities of the
 trained neural network model _trained\_model_, call the test_model() function
 which plays a complete game of grid_walker with _trained\_model_ being used to select
-the agent's moves every turn:
+the agent's move at every turn:
 ![](figs/test.png)
 Success! Repeating this test will show that the model quite successful at
 guiding the randomly-positioned agent A around hazards W and P as it navigates towards goal G.
