@@ -78,7 +78,8 @@ for more details on how Q-learning is used to train the AI,
 https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L164#L248
 
 To test the now-trained neural network model _trained\_model_, call the test_model() function
-which uses the model to play a complete game of grid_walker,
+which plays a complete game of grid_walker with _trained\_model_ being used to select
+the agent's moves:
 ![](figs/test.png)
 
 
