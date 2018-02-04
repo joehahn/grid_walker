@@ -8,7 +8,7 @@ git branch=master
 
 ### Summary:
 This grid_walker demo uses Q-learning to teach a neural net AI how to navigate an agent
-#about a 6x6 grid, guiding it towards a goal while avoiding obstacles and hazards.
+about a 6x6 grid, guiding it towards a goal while avoiding obstacles and hazards.
 
 This version of grid_walker was adapted from a blog post by Outlace,
 http://outlace.com/rlpart3.html . Outlace's original code was a sub-optimal mess,
