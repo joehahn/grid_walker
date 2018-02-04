@@ -91,7 +91,7 @@ for the AI (which is signified in the chart below via 'g' for Goal) and which
 agent starting positions result in a loss (ie the AI guided the agent into pit 'p' or else 
 agent wandered the grid until the available moves 'm' where exhausted): 
 ![](figs/grid_test.png)
-Note that...
+Note that... 
 
 
 
