@@ -50,6 +50,6 @@ during the game.
 Using the functionality provided in grid_walker.py, the agent can be instructed to move
 one grid cell, and in the following the agent A was instructed to move one cell to the
 right:
-![](figs/grid.png)
+![](figs/move.png)
 
 
