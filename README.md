@@ -17,8 +17,13 @@ is excellent and worth a read.
 
 ### Setup:
 
-I execute grid_walker on my Mac laptop where I've installed Anaconda python 2.7 plus
-other nedded libraries via:
+Clone this repo:
+
+    git clone https://github.com/joehahn/grid_walker.git
+    cd grid_walker
+
+Note that I am executing grid_walker on a Mac laptop where I've installed
+Anaconda python 2.7 plus a few other needed libraries via:
 
     wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh
     chmod +x ./Miniconda2-latest-MacOSX-x86_64.sh
