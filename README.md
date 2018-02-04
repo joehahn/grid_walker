@@ -11,9 +11,9 @@ This grid_walker demo uses Q-learning to teach a neural net AI how to navigate a
 about a very simple 6x6 grid, guiding it towards a goal while avoiding obstacles and hazards.
 
 This version of grid_walker was adapted from a blog post by Outlace,
-http://outlace.com/rlpart3.html. Outlace's original code was a sub-optimal mess,
-while I like to think this version is less so. Nonetheless his description of the
-Q-learning algorithm is excellent and worth a read.
+http://outlace.com/rlpart3.html. Outlace's original code is somewhat a mess,
+while I like to think the version provided below is less so. Nonetheless Outlace's
+description of the Q-learning algorithm is excellent and worth a read.
 
 ### Setup:
 
@@ -81,6 +81,7 @@ To test the now-trained neural network model _trained\_model_, call the test_mod
 which plays a complete game of grid_walker with _trained\_model_ being used to select
 the agent's moves:
 ![](figs/test.png)
+Success!
 
 
 
