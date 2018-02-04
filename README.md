@@ -84,7 +84,7 @@ which plays a complete game of grid_walker with _trained\_model_ being used to s
 the agent's move at every turn:
 ![](figs/test.png)
 Success! Repeating this test will show that the model quite successful at
-guiding the randomly-positioned agent A around hazards W and P as it navigates towards goal G.
+guiding the randomly-positioned agent A around hazards W and P and towards goal G.
 
 However success is not 100%, and the following plays numerous grid_walker games
 in order to chart those initial agent positions that ultimately result in a win
