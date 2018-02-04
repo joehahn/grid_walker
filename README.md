@@ -57,7 +57,7 @@ The agent is then moved up and onto the goal G which then generates a reward of 
 ![](figs/goal.png)
 This also changes the game_state from 'running' to 'goal' to indicate the game conclusion.
 The pit P is a hazard, and moving the agent there ends the game with
-reward -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
+reward -10, and the agent is not allowed to move onto wall W or beyond the 6x6 grid,
 and trying do so generates a reward of -3. A game also ends if the agent moves
 more than max_moves=36 times.
 
