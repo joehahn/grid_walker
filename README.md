@@ -74,8 +74,8 @@ The model is then trained using an epsilon-greedy Q-learning algorithm:
 Initially the agent wanders the grid randomly while gathering mostly negative rewards.
 But in later training games the random movements are ramped down as the AI learns how to 
 nudge the agent towards the direction of maximum future rewards; see the source
-for more details on how Q-learning is used to train the AI,
 https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L164#L248
+for more details on how Q-learning is used to train the AI.
 
 To test the now-trained neural network model _trained\_model_, call the test_model() function
 which plays a complete game of grid_walker with _trained\_model_ being used to select
