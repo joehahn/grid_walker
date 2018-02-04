@@ -60,9 +60,11 @@ this the game. The pit P is a hazard, and moving the agent there ends the game w
 a reward of -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
 and trying do so generates a reward of -3. 
 
-The purpose of this grid_walker demo is to build a neural-network based AI that will
-navigate the agent from any random starting cell over to goal G without bumping to
+The purpose of the grid_walker demo is to build a neural-network based AI that will
+advise the agent on how to navigate across this grid towards goal G without bumping to
 the hazards W or P. This demo uses keras to build a two-hidden-layer net that are
 each composed of 36 neurons
 ![](figs/net.png)
+see also https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L146#L161
+
 
