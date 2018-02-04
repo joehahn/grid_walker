@@ -82,7 +82,15 @@ trained neural network model _trained\_model_, call the test_model() function
 which plays a complete game of grid_walker with _trained\_model_ being used to select
 the agent's moves every turn:
 ![](figs/test.png)
-Success!
+Success! Repeating this test will show that the model quite successful at
+guiding the randomly-positioned agent A around hazards W and P as it navigates towards goal G.
+
+However success is not 100%, and the following plays numerous grid_walker games
+to chart which initial agent positions result in the AI winning the game
+(which is signified in the chart below via 'g' for Goal) and which
+initial positions lead to a loss (ie the AI guided the agent into pit 'p' or else 
+agent wandered the grid until the available moves 'm' where exhausted): 
+![](figs/test.png)
 
 
 
