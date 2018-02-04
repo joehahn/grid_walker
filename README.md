@@ -87,10 +87,10 @@ guiding the randomly-positioned agent A around hazards W and P as it navigates t
 
 However success is not 100%, and the following plays numerous grid_walker games
 in order to chart the initial agent positions ultimately result in a win
-for the AI (which is signified in the chart below via 'g' since the AI delivered
+for the AI (which is signified in the chart below via a _g_ symbol since the AI delivered
 the agent into the Goal) and which
-agent starting positions result in a loss (ie the AI guided the agent into pit 'p' or else 
-agent wandered the grid until the available moves 'm' where exhausted): 
+agent starting positions result in a loss (ie the AI guided the agent into pit _p_ or else 
+agent wandered the grid until the available moves _m_ where exhausted): 
 ![](figs/grid_test.png)
 Note that... 
 
