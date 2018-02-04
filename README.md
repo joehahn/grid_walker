@@ -67,7 +67,8 @@ each composed of 36 neurons
 ![](figs/net.png)
 The build_model() function,
 https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L146#L161,
-is where keras + tensorflow are used to assemble that neural net model. 
+is where keras + tensorflow are used to assemble that neural net model.
+
 The model is then trained using epsilon-greedy Q-learning:  
 ![](figs/train.png)
 initially the agent wanders the grid randomly while gathering (mostly negative) rewards.
