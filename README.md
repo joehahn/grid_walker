@@ -95,7 +95,8 @@ agent wandered the grid until the available moves _m_ where exhausted):
 ![](figs/grid_test.png)
 Note the _m_ cell, which appears to be 'shadowed' by wall W; agents starting here fail
 to find goal G before exhausting all of there turns. Similarly, agents starting
-in the two _p_ cells seem to be in the shadow of pit P, and they fail to find the goal.
+in the two _p_ cells seem to be in the shadow of pit P, and the AI drives
+these agents into the pit instead of the goal.
 However the fix is simple, just double the number of games played when training
 the model; seting N_training_games=3000 and retrain and retest will show that
 the retrained AI wins 100% of the time when the agent is started at all possible
