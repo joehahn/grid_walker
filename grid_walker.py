@@ -12,6 +12,7 @@
 #imports
 import numpy as np
 import copy
+import random
 
 #initialize the environment = dict containing all constants that describe the system
 def initialize_environment(grid_size, init):
@@ -121,13 +122,14 @@ def state2vector(state, environment):
     return xy.reshape(1, len(xy))
 
 #initialize the memories queue with a buncha random moves
-def initialize_memorie(memories_size):
+def initialize_memories(environment, memories_size):
     from collections import deque
     memories = deque(maxlen=memories_size)
     state = initialize_state(environment)
     N_moves = 0
     while (len(memories) < memories_size):
         state_vector = state2vector(state, environment)
+        actions = environment['actions']
         action = np.random.choice(actions)
         state_next = move_agent(state, action, environment)
         reward = get_reward(state_next, state)
@@ -159,12 +161,14 @@ def build_model(N_inputs, grid_size, N_outputs):
     return model
 
 #train model
-def train(model, N_training_games, gamma, memories_size, batch_size, debug=False):
+def train(environment, model, N_training_games, gamma, memories_size, batch_size, debug=False):
     epsilon = 1.0
     for N_games in range(N_training_games):
         state = initialize_state(environment)
+        state_vector = state2vector(state, environment)
+        N_inputs = state_vector.shape[1]
         #initialize memory of random movements by agent
-        memories = initialize_memorie(memories_size)
+        memories = initialize_memories(environment, memories_size)
         experience_replay = True
         N_moves = 0
         if (N_games > N_training_games/10):
@@ -236,15 +240,16 @@ def train(model, N_training_games, gamma, memories_size, batch_size, debug=False
     return model
 
 #test model
-def test_model(model, environment):
+def test_model(model, environment, display_stats=False):
     acts = environment['acts']
     initial_state = initialize_state(environment)
-    grid = make_grid(initial_state, environment)
-    print('initial state:')
-    print np.rot90(grid.T)
-    print ("=======================")
+    if (display_stats):
+        grid = make_grid(initial_state, environment)
+        print 'initial state:'
+        print np.rot90(grid.T)
+        print '======================='
     N_moves = 0
-    state = initial_state
+    state = initial_state.copy()
     game_state = get_game_state(state, N_moves, environment)
     while (game_state == 'running'):
         state_vector = state2vector(state, environment)
@@ -254,11 +259,13 @@ def test_model(model, environment):
         N_moves += 1
         grid = make_grid(state_next, environment)
         reward = get_reward(state_next, state)
-        print("move: %s    action: %s    reward: %s" %(N_moves, acts[action], reward))
-        print np.rot90(grid.T)
         game_state = get_game_state(state_next, N_moves, environment)
-        if (game_state != 'running'):
-            print("game_state: %s" %(game_state))
+        if (display_stats):
+            print(' move : %s    action: %s' %(N_moves, acts[action]))
+            print('reward: %s' %reward)
+            print np.rot90(grid.T)
+            if (game_state != 'running'):
+                print('game_state: %s' %(game_state))
         state = state_next
     final_state = state
-    return initial_state, final_state, N_moves
+    return initial_state, final_state, N_moves, game_state

@@ -8,7 +8,7 @@ git branch=master
 
 ### Summary:
 This grid_walker demo uses Q-learning to teach a neural net AI how to navigate an agent
-about a 6x6 grid, guiding it towards a goal while avoiding obstacles and hazards.
+about a very simple 6x6 grid, guiding it towards a goal while avoiding obstacles and hazards.
 
 This version of grid_walker was adapted from a blog post by Outlace,
 http://outlace.com/rlpart3.html. Outlace's original code was a sub-optimal mess,
@@ -28,7 +28,6 @@ Anaconda python 2.7 plus a few other needed libraries via:
     wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh
     chmod +x ./Miniconda2-latest-MacOSX-x86_64.sh
     ./Miniconda2-latest-MacOSX-x86_64.sh -b -p ~/miniconda2
-    ~/miniconda2/bin/conda install -y seaborn
     ~/miniconda2/bin/conda install -y jupyter
     ~/miniconda2/bin/conda install -y keras
 
