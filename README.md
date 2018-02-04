@@ -93,7 +93,8 @@ the agent into the Goal) and which
 agent starting positions result in a loss (ie the AI guided the agent into pit _p_ or else 
 agent wandered the grid until the available moves _m_ where exhausted): 
 ![](figs/grid_test.png)
-Note that... 
-
+Note the _m_ cell, which appears to be 'shadowed' by wall W; agents starting here fail
+to find goal G before exhausting all of there turns. Similarly, agents starting
+in the two _p_ cells seem to be in the shadow of pit P. 
 
 
