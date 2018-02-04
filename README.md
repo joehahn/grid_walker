@@ -57,7 +57,7 @@ The agent is then moved up and onto the goal G which then generates a reward of 
 ![](figs/goal.png)
 and changes the game_state from 'running' to 'goal' to indicate the conclusion of
 this the game. The pit P is a hazard, and moving the agent there ends the game with
-a reward of -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
+reward -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
 and trying do so generates a reward of -3. 
 
 The purpose of the grid_walker demo is to build a neural-network based AI that will
@@ -65,9 +65,9 @@ advise the agent on how to navigate across this grid towards goal G without bump
 the hazards W or P. This demo uses keras to build a two-hidden-layer net that are
 each composed of 36 neurons
 ![](figs/net.png)
-The build_model() function,
+For additional details see the build_model() function,
 https://github.com/joehahn/grid_walker/blob/master/grid_walker.py#L146#L161,
-is where keras + tensorflow are used to assemble that neural net model.
+which is where keras + tensorflow are used to assemble that neural net model.
 
 The model is then trained using epsilon-greedy Q-learning:  
 ![](figs/train.png)
