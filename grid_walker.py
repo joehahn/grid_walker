@@ -9,19 +9,9 @@
 #this was adapted from http://outlace.com/rlpart3.html  
 #to execute:    ./gridwalker.py
 
-#game settings
-grid_size = 6
-init = 'random_agent'
-#init = 'fixed'
-rn_seed = 15
-
 #imports
 import numpy as np
 import copy
-
-#seed random number generator
-import random
-np.random.seed(rn_seed)
 
 #initialize the environment = dict containing all constants that describe the system
 def initialize_environment(grid_size, init):
@@ -168,31 +158,6 @@ def build_model(N_inputs, grid_size, N_outputs):
     model.compile(loss='mse', optimizer=rms)
     return model
 
-#check initial conditions
-environment = initialize_environment(grid_size, init)
-state = initialize_state(environment)
-objects = environment['objects']
-actions = environment['actions']
-acts = environment['acts']
-state_vector = state2vector(state, environment)
-grid = make_grid(state, environment)
-print 'objects = ', objects
-print 'actions = ', actions
-print 'acts = ', acts
-print 'state = ', state
-print 'state_vector = ', state_vector
-print 'state_vector.shape = ', state_vector.shape
-print np.rot90(grid.T)
-N_inputs = state_vector.shape[1]
-N_outputs = len(actions)
-grid_size = environment['grid_size']
-max_moves = environment['max_moves']
-print 'N_inputs = ', N_inputs
-print 'N_outputs = ', N_outputs
-print 'grid_size = ', grid_size
-print 'max_moves = ', max_moves
-print 'rn_seed = ', rn_seed
-
 #train model
 def train(model, N_training_games, gamma, memories_size, batch_size, debug=False):
     epsilon = 1.0
@@ -297,18 +262,3 @@ def test_model(model, environment):
         state = state_next
     final_state = state
     return initial_state, final_state, N_moves
-
-#assemble the untrained neural network that will tell agent how to navigate the gird
-model = build_model(N_inputs, grid_size, N_outputs)
-print model.summary()
-
-#train neural network 
-N_training_games = 500                #number of games to play while training model
-gamma = 0.9                           #discount for future rewards
-memories_size = 100                    #size of memory queue size, for experience replay
-batch_size = memories_size/5         #number of memories to use when retraining the model
-debug = True
-trained_model = train(model, N_training_games, gamma, memories_size, batch_size, debug=debug)
-
-#test the trained neural network
-initial_state, final_state, N_moves = test_model(trained_model, environment)
