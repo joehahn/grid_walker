@@ -58,7 +58,8 @@ The agent is then moved up and onto the goal G which then generates a reward of 
 and changes the game_state from 'running' to 'goal' to indicate the conclusion of
 this the game. The pit P is a hazard, and moving the agent there ends the game with
 reward -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
-and trying do so generates a reward of -3. 
+and trying do so generates a reward of -3. A game also ends if the agent moves
+more than max_moves=36 times.
 
 The purpose of the grid_walker demo is to build a neural-network based AI that will
 advise the agent on how to navigate across this grid towards goal G without bumping to
