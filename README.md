@@ -54,7 +54,7 @@ instructed to move one cell to the right, which also generated a small reward
 ie cost of -1
 ![](figs/move.png)
 The agent is then moved up and onto the goal G which then generates a reward of 10
-![](figs/move.png)
+![](figs/goal.png)
 and changes the game_state from 'running' to 'goal' to indicate the conclusion of
 this the game. The pit P is a hazard, and moving the agent there ends the game with
 a reward of -10. Also the agent is not allowed to move onto wall W or beyond the 6x6 grid,
