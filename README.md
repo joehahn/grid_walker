@@ -1,7 +1,7 @@
 # grid_walker
 
 by Joe Hahn,<br />
-jmh.datasciences@gmail.com,<br />
+joe.hahn@jmh-datasciences.com,<br />
 3 February 2018<br />
 git branch=master
 
